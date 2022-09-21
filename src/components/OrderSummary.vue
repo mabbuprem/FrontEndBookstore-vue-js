@@ -1,0 +1,121 @@
+<template>
+    <v-card class="mx-auto summary-card mt-10 mb-5" id="mySummary" outlined>
+      <v-card-title>Order Summary</v-card-title>
+      <v-card-text>
+        <v-layout class="mb-5">
+          <v-flex md2>
+            <v-img class="cart-image ml-5 mt-2" :src="image"></v-img>
+          </v-flex>
+          <v-flex md10>
+            <v-row class="ml-5 mt-1">
+              <v-list-item>{{ title }}</v-list-item>
+              <v-list-item>{{ author }}</v-list-item>
+              <v-list-item>{{ "Rs." + price }}</v-list-item>
+              <v-list-item>{{ "Quantity: " + bookCount }}</v-list-item>
+            </v-row>
+            <v-row class="d-flex place-order">
+              <v-btn class="check-out-btn" @click="checkoutOrder">Checkout</v-btn>
+            </v-row>
+          </v-flex>
+        </v-layout>
+      </v-card-text>
+    </v-card>
+  </template>
+  
+  <script >
+  export default {
+    name: "OrderSummary",
+    data: () => ({
+      image: "",
+      author: "",
+      price: 0,
+      title: "",
+      showDetails: false,
+      book: "",
+      orderedBooks: "",
+      bookCount: 0,
+    }),
+    components: {},
+    methods: {
+      setBook(book) {
+        console.log("book detail", book);
+        this.title = book.title;
+        this.image = book.image;
+        this.price = book.price;
+        this.author = book.author;
+        this.showDetails = !this.showDetails;
+        this.bookCount = book.quantity;
+        this.book = book;
+      },
+      checkoutOrder() {
+        this.orderedBooks = this.book;
+        this.$emit("onCheckOut", this.orderedBooks);
+      },
+
+      
+    },
+    beforeMount() {
+      console.log("summry", this.$route.query);
+      if (this.$route.query.orderedBooks != undefined)
+        this.orderedBooks = this.$route.query.orderedBooks;
+      else this.orderedBooks = [];
+    },
+  };
+  </script>
+  
+  
+  <style>
+ .summary-card{
+    left: 270px;
+    margin-top: 0px;
+    width: 655px;
+    border: 1px solid faintGrey;
+    border-radius: 1px;
+    background: white 0% 0% no-repeat padding-box;   
+}
+
+.check-out-btn{
+    color: white !important;
+      background-color: rgb(52, 112, 224)!important;
+      width: 120px !important;
+      left: 380px;
+}
+
+@media only screen and (min-width: 0px ) and (max-width: 360px ) {
+    .summary-card{
+        left: 12px;
+        margin-top: 0px;
+        width: 300px;
+        border: 1px solid faintGrey;
+        border-radius: 1px;
+        background: white 0% 0% no-repeat padding-box;   
+    }
+
+    .check-out-btn{
+        color: white !important;
+          background-color: rgb(52, 112, 224)!important;
+          width: 90px !important;
+          left: 90px;
+          top:5px
+    }
+}
+
+@media only screen and (min-width: 361px ) and   (max-width: 768px ) {
+    .summary-card{
+        left: 120px;
+        margin-top: 0px;
+        width: 500px;
+        border: 1px solid faintGrey;
+        border-radius: 1px;
+        background: white 0% 0% no-repeat padding-box;   
+    }
+
+    .check-out-btn{
+        color: white !important;
+          background-color: rgb(52, 112, 224)!important;
+          width: 140px !important;
+          left: 200px;
+          top:5px
+    } 
+}
+  </style>
